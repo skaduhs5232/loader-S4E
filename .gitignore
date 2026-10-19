@@ -1,0 +1,17 @@
+# Dependências e artefatos de instalação
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Pacotes empacotados — a distribuição é o próprio repositório git
+*.tgz
+
+# Saída local de ferramentas (frames, screenshots)
+frames/
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
