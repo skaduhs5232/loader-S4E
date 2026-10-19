@@ -1,8 +1,8 @@
-/*! @s4e/mitosis-loader — loader "mitose" (Web Component, zero dependências) */
+/*! @s4e/mitosis-loader@1.1.0-ia — variante IA: mitose até formar as letras I A */
 import { createElement } from 'react';
 import './mitosis-loader.mjs';
 
-/** <S4ELoader size={48} color="#7C154D" speed={1} /> */
+/** <S4ELoader size={48} color="#7C154D" speed={1} /> — variante IA, forma as letras I A. */
 export function MitosisLoader({ size = 64, color, speed, label, paused, className, style, ...rest }) {
   return createElement('s4e-loader', {
     size: String(size),

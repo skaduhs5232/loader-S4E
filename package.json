@@ -1,7 +1,7 @@
 {
   "name": "@s4e/mitosis-loader",
-  "version": "1.0.0",
-  "description": "Loader S4E \"mitose\": células que se dividem (1→2→4→8→16) até formar a marca. Web Component sem dependências + wrapper React.",
+  "version": "1.1.0-ia",
+  "description": "Variante IA (branch IA) do loader de mitose: células 1→2→4→8→16 até formar as letras \"I A\". O branch main forma a marca S4E. Web Component sem dependências + wrapper React.",
   "main": "./dist/mitosis-loader.umd.js",
   "module": "./dist/mitosis-loader.mjs",
   "unpkg": "./dist/mitosis-loader.umd.js",
@@ -33,7 +33,6 @@
     "dist",
     "assets/logo.svg",
     "scripts",
-    "build/logo.d",
     "README.md",
     "preview.gif"
   ],
@@ -54,7 +53,8 @@
     "web-component",
     "svg",
     "s4e",
-    "mitose"
+    "mitose",
+    "ia"
   ],
   "license": "UNLICENSED",
   "repository": {

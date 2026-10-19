@@ -1,42 +1,47 @@
-# @s4e/mitosis-loader
+# @s4e/mitosis-loader · variante I A
 
-![Loader S4E: uma célula se divide até formar a marca](./preview.gif)
+![Loader: uma célula se divide até formar as letras I A](./preview.gif)
 
-Loader oficial da S4E. Uma célula no centro se divide por mitose — **1 → 2 → 4 → 8 → 16** — até formar a marca. As pontes da logo crescem de célula em célula, seguram, recolhem e as células se fundem de volta. O ciclo dura **6 segundos**, na cor **`#7C154D`**.
+Variante **IA** do loader de mitose. Uma célula no centro se divide — **1 → 2 → 4 → 8 → 16** — e as pontes crescem de célula em célula até formar as letras **I A** (a letra I, um espaço, a letra A). O I fecha primeiro; em seguida as pernas do A e, por último, a travessa. As pontes seguram, recolhem e as células se fundem de volta. O ciclo dura **6 segundos**, na cor **`#7C154D`**.
+
+O branch `main` é a outra variante: a mesma mitose termina na **marca S4E**, não nestas letras. Instalar sem `#IA` acompanha o `main`.
 
 É um Web Component `<s4e-loader>`, sem dependências. O `dist/` já vem pronto neste repositório: instalar não exige build.
 
 ## Instalação
 
-Um comando, sem publicar no npm. Sem tag, a instalação acompanha o branch `main`:
+Um comando, sem publicar no npm. Esta variante está no branch `IA`:
 
 ```bash
-npm install github:skaduhs5232/loader-S4E
+npm install github:skaduhs5232/loader-S4E#IA
 ```
 
-Para fixar a versão, acrescente a tag no final (`#v1.0.0`):
+O mesmo commit, com a URL explícita:
 
 ```bash
-npm install github:skaduhs5232/loader-S4E#v1.0.0
-npm install git+https://github.com/skaduhs5232/loader-S4E.git#v1.0.0
-yarn add github:skaduhs5232/loader-S4E#v1.0.0
-pnpm add github:skaduhs5232/loader-S4E#v1.0.0
+npm install git+https://github.com/skaduhs5232/loader-S4E.git#IA
+yarn add github:skaduhs5232/loader-S4E#IA
+pnpm add github:skaduhs5232/loader-S4E#IA
 ```
 
 No Yarn 4 o nome do pacote entra antes da tag:
 
 ```bash
-yarn add @s4e/mitosis-loader@github:skaduhs5232/loader-S4E#v1.0.0
+yarn add @s4e/mitosis-loader@github:skaduhs5232/loader-S4E#IA
 ```
+
+A versão deste branch é `1.1.0-ia` (campo `version` do `package.json`). Não é uma tag git: o seletor que entrega este código é `#IA`.
 
 O pacote instalado se chama `@s4e/mitosis-loader`. Não há script `prepare`: o git install não instala devDependencies e não roda build.
 
+Para a marca S4E, use o `main` (sem sufixo) ou uma tag daquele branch, por exemplo `#v1.0.0`.
+
 ## HTML puro (tag `<script>`)
 
-Pelo jsDelivr, com a versão fixada na tag `v1.0.0`. **O repositório precisa estar público** para esta URL responder:
+Pelo jsDelivr, apontando para o branch `IA`. **O repositório precisa estar público** para esta URL responder:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/skaduhs5232/loader-S4E@v1.0.0/dist/mitosis-loader.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/skaduhs5232/loader-S4E@IA/dist/mitosis-loader.umd.js"></script>
 
 <s4e-loader></s4e-loader>
 <s4e-loader size="48" color="#ffffff" speed="1.5" label="Enviando arquivo"></s4e-loader>
@@ -134,24 +139,24 @@ export class AppComponent {}
 
 ## SVG puro (`<img>`)
 
-Sem JavaScript. A cor fica fixa em `#7C154D` (edite o `fill` do arquivo se precisar de outra).
+Sem JavaScript. A cor fica fixa em `#7C154D` (edite o `fill` do arquivo se precisar de outra). O desenho é o ciclo inteiro, e o quadro estável mostra **I A**.
 
 ```html
 <img
-  src="https://cdn.jsdelivr.net/gh/skaduhs5232/loader-S4E@v1.0.0/dist/mitosis-loader.svg"
+  src="https://cdn.jsdelivr.net/gh/skaduhs5232/loader-S4E@IA/dist/mitosis-loader.svg"
   width="64"
   alt="Carregando"
 >
 ```
 
-O arquivo local é `dist/mitosis-loader.svg` (também em `node_modules/@s4e/mitosis-loader/dist/mitosis-loader.svg`). `dist/snippet.html` é o mesmo desenho em um bloco `<div>` + `<style>` + `<svg>` para colar numa página. A URL do jsDelivr só funciona com o repositório público.
+O arquivo local é `dist/mitosis-loader.svg` (também em `node_modules/@s4e/mitosis-loader/dist/mitosis-loader.svg`). `dist/snippet.html` é o mesmo desenho em um bloco `<div>` + `<style>` + `<svg>` para colar numa página. A URL do jsDelivr só funciona com o repositório público. `assets/logo.svg` é a forma estática, sem animação.
 
 ## Atributos e variáveis CSS
 
 | Atributo | Padrão | Descrição |
 | --- | --- | --- |
 | `size` | `64` | Tamanho em px (número) ou qualquer unidade CSS (`2rem`, `100%`). |
-| `color` | `#7C154D` | Cor da marca e das células. |
+| `color` | `#7C154D` | Cor das letras e das células. |
 | `speed` | `1` | Multiplicador de velocidade. `1` = ciclo de 6s. |
 | `label` | `Carregando` | Texto do `aria-label`. |
 | `paused` | — | Presente = animação pausada. |
@@ -176,11 +181,21 @@ s4e-loader {
 
 O elemento recebe `role="progressbar"`, `aria-busy="true"` e `aria-label` (`label`, padrão `"Carregando"`).
 
-Com `prefers-reduced-motion: reduce`, a mitose não roda: a marca aparece inteira, com uma pulsação suave.
+Com `prefers-reduced-motion: reduce`, a mitose não roda: as letras I A aparecem inteiras, com uma pulsação suave.
 
-## Atualizar para uma versão nova
+## O que este branch desenha
 
-As versões são tags git (`v1.0.0`, `v1.1.0`, …). Troque `v1.0.0` nos comandos acima e na URL do jsDelivr (`...@v1.1.0/dist/mitosis-loader.umd.js`). Sem `#tag`, a instalação volta a acompanhar o `main`.
+As 16 células pousam numa grade de dois blocos, com um vão entre eles.
+
+O **I** usa 8 células: três na serifa de cima, duas no meio da haste e três na serifa de baixo. A ponte da haste liga o centro das serifas de cima para baixo; as serifas crescem a partir desses centros.
+
+O **A** usa as outras 8: ápice, dois ombros, dois nós na altura da travessa, o centro da travessa e dois pés. As pernas crescem juntas, do ápice até o pé; a travessa liga os nós do meio e deixa o contador aberto, com a base aberta entre os pés.
+
+A primeira divisão manda metade das células para o lado do I e metade para o lado do A. As divisões seguintes separam topo e base, depois os pares, até cada célula chegar no seu nó. O filtro gooey (desfoque + limiar) continua responsável pelo alongamento e pelo estrangulamento de cada mitose.
+
+## Atualizar
+
+Sem `#IA`, a instalação acompanha o `main` e volta a formar a marca S4E. Para continuar nesta variante, mantenha `#IA` no comando e na URL do jsDelivr (`...@IA/dist/mitosis-loader.umd.js`).
 
 ## Como gerar de novo
 
@@ -190,4 +205,4 @@ As versões são tags git (`v1.0.0`, `v1.1.0`, …). Troque `v1.0.0` nos comando
 npm run build
 ```
 
-O traçado da marca está em `build/logo.d`. A demo local é o `demo.html` (abra no navegador; o script já vai dentro do arquivo).
+A grade das letras e o tempo das pontes estão em `scripts/build.mjs`. A demo local é o `demo.html` (abra no navegador; o script já vai dentro do arquivo).
