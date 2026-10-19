@@ -95,21 +95,64 @@ const aR = Pc(2, 0), aFR = Pc(3, 1), aBar = Pc(2, 1);
 const barL = [aL[0], aBar[1]], barR = [aR[0], aBar[1]];
 const E_GROW = 'cubic-bezier(.5,0,.35,1)';   // estende e "agarra" a célula vizinha
 const E_BACK = 'cubic-bezier(.5,0,.5,1)';
-const W = 76;
-// [pontos, largura do traço, keyframes [t, fração desenhada, easing]]
+// Máscara: mesma largura do anel e da gota no main (90). A seta do main usa 70
+// porque o traçado dela já é mais curto; aqui as pontes são do tamanho do anel.
+// O que se vê não é esse traço: é a silhueta abaixo, com a cintura do main (~10px).
+const MASK_W = 90;
+// Largura cheia da ponte no viewBox, pela distância ao centro da célula mais próxima.
+// Medida no anel vertical do 4 no frame final do main (cintura 10, célula 121).
+const NECK_W = [[0, 121], [8, 120], [16, 118], [24, 112], [32, 103], [40, 91], [48, 77], [56, 64], [64, 52], [72, 42], [80, 33], [88, 25], [96, 19], [104, 14], [112, 11], [120, 10], [160, 10]];
+function bridgeWidth(s) {
+  if (s <= 0) return NECK_W[0][1];
+  for (let i = 1; i < NECK_W.length; i++) {
+    if (s <= NECK_W[i][0]) {
+      const [s0, w0] = NECK_W[i - 1], [s1, w1] = NECK_W[i];
+      return w0 + (w1 - w0) * ((s - s0) / (s1 - s0));
+    }
+  }
+  return 10;
+}
+// Contorno preenchido. `bulbs` são os índices de pts que são centros de célula;
+// a largura segue a cintura do main até essas células e fica fina nos outros fins
+// (as pontas da travessa encontram a cintura da perna, não um disco).
+function neckD(pts, bulbs) {
+  const cum = [0];
+  for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const at = bulbs.map((i) => cum[i]);
+  const left = [], right = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1];
+    const dx = b[0] - a[0], dy = b[1] - a[1];
+    const L = Math.hypot(dx, dy) || 1;
+    const nx = -dy / L, ny = dx / L;
+    const n = Math.max(18, Math.round(L / 5));
+    for (let k = 0; k <= n; k++) {
+      if (i && k === 0) continue;
+      const dist = cum[i] + (k / n) * L;
+      let s = Infinity;
+      for (const c of at) s = Math.min(s, Math.abs(dist - c));
+      const hw = bridgeWidth(s) / 2;
+      const x = a[0] + dx * (k / n), y = a[1] + dy * (k / n);
+      left.push([+(x + nx * hw).toFixed(1), +(y + ny * hw).toFixed(1)]);
+      right.push([+(x - nx * hw).toFixed(1), +(y - ny * hw).toFixed(1)]);
+    }
+  }
+  return 'M' + left.concat(right.reverse()).map((p) => p.join(' ')).join('L') + 'Z';
+}
+// [pontos, largura da máscara, índices de célula, keyframes [t, fração, easing]]
 // I primeiro; as pernas do A em paralelo; a travessa por último.
 // Recolhem na ordem inversa, antes da fusão (t=4.5).
 const BRIDGES = [
-  { pts: [iT, iM, iB], w: W,
+  { pts: [iT, iM, iB], w: MASK_W, bulbs: [0, 1, 2],
     kf: [[0, 0, E_GROW], [2.16, 0, E_GROW], [2.40, 0.5, E_SOFT], [2.46, 0.5, E_GROW], [2.72, 1, E_SOFT],
          [4.16, 1, E_BACK], [4.46, 0, E_SOFT], [T, 0, E_SOFT]] },
-  { pts: [aT, aL, aFL], w: W,
+  { pts: [aT, aL, aFL], w: MASK_W, bulbs: [0, 1, 2],
     kf: [[0, 0, E_GROW], [2.66, 0, E_GROW], [2.92, 0.414, E_SOFT], [2.98, 0.414, E_GROW], [3.28, 1, E_SOFT],
          [4.00, 1, E_BACK], [4.30, 0, E_SOFT], [T, 0, E_SOFT]] },
-  { pts: [aT, aR, aFR], w: W,
+  { pts: [aT, aR, aFR], w: MASK_W, bulbs: [0, 1, 2],
     kf: [[0, 0, E_GROW], [2.66, 0, E_GROW], [2.92, 0.414, E_SOFT], [2.98, 0.414, E_GROW], [3.28, 1, E_SOFT],
          [4.00, 1, E_BACK], [4.30, 0, E_SOFT], [T, 0, E_SOFT]] },
-  { pts: [barL, aBar, barR], w: W,
+  { pts: [barL, aBar, barR], w: MASK_W, bulbs: [1],
     kf: [[0, 0, E_GROW], [3.20, 0, E_GROW], [3.40, 0.5, E_SOFT], [3.46, 0.5, E_GROW], [3.66, 1, E_SOFT],
          [3.92, 1, E_BACK], [4.14, 0, E_SOFT], [T, 0, E_SOFT]] },
 ];
@@ -198,8 +241,8 @@ function logoShapes() {
     const [x, y] = lattice(c.u, c.v);
     return `<circle cx="${f(x)}" cy="${f(y)}" r="${BASE_R}"/>`;
   }).join('');
-  const strokes = BRIDGES.map((b) => `<path fill="none" stroke-width="${b.w}" stroke-linecap="round" stroke-linejoin="round" d="M${b.pts.map((p) => p.join(' ')).join('L')}"/>`).join('');
-  return dots + strokes;
+  const necks = BRIDGES.map((b) => `<path d="${neckD(b.pts, b.bulbs)}"/>`).join('');
+  return dots + necks;
 }
 function svg(prefix, id, { color = `var(--s4e-color,${COLOR})`, title = '' } = {}) {
   const circles = cells.map((_, i) => `<circle class="${prefix}cell ${prefix}c${i}" r="${BASE_R}"/>`).join('');
@@ -216,7 +259,7 @@ function svg(prefix, id, { color = `var(--s4e-color,${COLOR})`, title = '' } = {
     `<mask id="${id}m" maskUnits="userSpaceOnUse" x="0" y="0" width="910" height="910">` +
     `<g fill="#fff">${maskCircles}</g><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">${strokes}</g></mask></defs>` +
     `<g class="${prefix}goo" filter="url(#${id})" style="fill:${color}">${circles}${drops}</g>` +
-    `<g class="${prefix}logo" mask="url(#${id}m)" style="fill:${color};stroke:${color}">${logoShapes()}</g></svg>`;
+    `<g class="${prefix}logo" mask="url(#${id}m)" style="fill:${color}">${logoShapes()}</g></svg>`;
 }
 
 // ---------- Web Component ----------
@@ -375,7 +418,7 @@ ${svg(SP, 'mx-goo-inline')}
 `);
 
 fs.writeFileSync(path.join(root, 'assets/logo.svg'),
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 910 910"><title>S4E · IA</title><g fill="${COLOR}" stroke="${COLOR}">${logoShapes()}</g></svg>\n`);
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 910 910"><title>S4E · IA</title><g fill="${COLOR}">${logoShapes()}</g></svg>\n`);
 
 const demoPath = path.join(root, 'demo.html');
 if (fs.existsSync(demoPath)) {
