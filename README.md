@@ -6,22 +6,27 @@ Loader oficial da S4E. Uma célula no centro se divide por mitose — **1 → 2 
 
 É um Web Component `<s4e-loader>`, sem dependências. O `dist/` já vem pronto neste repositório: instalar não exige build.
 
-> **Este repositório está privado.** Enquanto continuar privado, os comandos de instalação só funcionam para quem tem acesso ao GitHub (é preciso autenticação: `gh auth login`, SSH ou um token). O jsDelivr só entrega os arquivos depois que o repositório for **público**. Tornar o repositório público não muda os comandos abaixo.
-
 ## Instalação
 
-Um comando, sem publicar no npm:
+Um comando, sem publicar no npm. Sem tag, a instalação acompanha o branch `main`:
 
 ```bash
 npm install github:skaduhs5232/loader-S4E
 ```
 
-O mesmo pacote em outros gerenciadores:
+Para fixar a versão, acrescente a tag no final (`#v1.0.0`):
 
 ```bash
-npm install git+https://github.com/skaduhs5232/loader-S4E.git
-yarn add github:skaduhs5232/loader-S4E
-pnpm add github:skaduhs5232/loader-S4E
+npm install github:skaduhs5232/loader-S4E#v1.0.0
+npm install git+https://github.com/skaduhs5232/loader-S4E.git#v1.0.0
+yarn add github:skaduhs5232/loader-S4E#v1.0.0
+pnpm add github:skaduhs5232/loader-S4E#v1.0.0
+```
+
+No Yarn 4 o nome do pacote entra antes da tag:
+
+```bash
+yarn add @s4e/mitosis-loader@github:skaduhs5232/loader-S4E#v1.0.0
 ```
 
 O pacote instalado se chama `@s4e/mitosis-loader`. Não há script `prepare`: o git install não instala devDependencies e não roda build.
@@ -175,19 +180,7 @@ Com `prefers-reduced-motion: reduce`, a mitose não roda: a marca aparece inteir
 
 ## Atualizar para uma versão nova
 
-As versões são **tags git**, no formato `v1.0.0`. O comando sem `#tag` acompanha o branch padrão (`main`).
-
-Para fixar a 1.0.0 (depois que a tag existir):
-
-```bash
-npm install github:skaduhs5232/loader-S4E#v1.0.0
-yarn add github:skaduhs5232/loader-S4E#v1.0.0
-pnpm add github:skaduhs5232/loader-S4E#v1.0.0
-```
-
-Para subir de versão: crie a tag nova no commit publicado (por exemplo `v1.1.0`) e troque o sufixo no comando, ou rode de novo o install sem `#tag` para pegar o `main`. A URL do jsDelivr usa a mesma tag: `...@v1.1.0/dist/mitosis-loader.umd.js`.
-
-A tag `v1.0.0` ainda precisa ser criada no commit que estiver em `main`. Sem ela, `#v1.0.0` e o jsDelivr `@v1.0.0` não resolvem.
+As versões são tags git (`v1.0.0`, `v1.1.0`, …). Troque `v1.0.0` nos comandos acima e na URL do jsDelivr (`...@v1.1.0/dist/mitosis-loader.umd.js`). Sem `#tag`, a instalação volta a acompanhar o `main`.
 
 ## Como gerar de novo
 
