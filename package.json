@@ -1,0 +1,68 @@
+{
+  "name": "@s4e/mitosis-loader",
+  "version": "1.0.0",
+  "description": "Loader S4E \"mitose\": células que se dividem (1→2→4→8→16) até formar a marca. Web Component sem dependências + wrapper React.",
+  "main": "./dist/mitosis-loader.umd.js",
+  "module": "./dist/mitosis-loader.mjs",
+  "unpkg": "./dist/mitosis-loader.umd.js",
+  "jsdelivr": "./dist/mitosis-loader.umd.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/mitosis-loader.mjs",
+      "require": "./dist/mitosis-loader.umd.js",
+      "default": "./dist/mitosis-loader.mjs"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.mjs",
+      "default": "./dist/react.mjs"
+    },
+    "./umd": "./dist/mitosis-loader.umd.js",
+    "./svg": "./dist/mitosis-loader.svg",
+    "./snippet": "./dist/snippet.html",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "./dist/mitosis-loader.mjs",
+    "./dist/mitosis-loader.umd.js",
+    "./dist/react.mjs"
+  ],
+  "files": [
+    "dist",
+    "assets/logo.svg",
+    "scripts",
+    "build/logo.d",
+    "README.md",
+    "preview.gif"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=17"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "loader",
+    "spinner",
+    "web-component",
+    "svg",
+    "s4e",
+    "mitose"
+  ],
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skaduhs5232/loader-S4E.git"
+  },
+  "homepage": "https://github.com/skaduhs5232/loader-S4E#readme",
+  "bugs": {
+    "url": "https://github.com/skaduhs5232/loader-S4E/issues"
+  }
+}
