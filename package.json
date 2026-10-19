@@ -1,7 +1,7 @@
 {
   "name": "@s4e/mitosis-loader",
   "version": "1.1.0-ia",
-  "description": "Variante IA (branch IA) do loader de mitose: células 1→2→4→8→16 até formar as letras \"I A\". O branch main forma a marca S4E. Web Component sem dependências + wrapper React.",
+  "description": "Variante IA (branch IA) do loader de mitose: o mesmo diamante de 16 células da marca S4E, com as pontes internas formando as letras IA no lugar do 4 e da seta. Web Component sem dependências + wrapper React.",
   "main": "./dist/mitosis-loader.umd.js",
   "module": "./dist/mitosis-loader.mjs",
   "unpkg": "./dist/mitosis-loader.umd.js",

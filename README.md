@@ -1,10 +1,10 @@
-# @s4e/mitosis-loader · variante I A
+# @s4e/mitosis-loader · variante IA
 
-![Loader: uma célula se divide até formar as letras I A](./preview.gif)
+![Loader: o diamante S4E cujas pontes internas formam as letras IA](./preview.gif)
 
-Variante **IA** do loader de mitose. Uma célula no centro se divide — **1 → 2 → 4 → 8 → 16** — e as pontes crescem de célula em célula até formar as letras **I A** (a letra I, um espaço, a letra A). O I fecha primeiro; em seguida as pernas do A e, por último, a travessa. As pontes seguram, recolhem e as células se fundem de volta. O ciclo dura **6 segundos**, na cor **`#7C154D`**.
+Variante **IA** do loader de mitose. O diamante de 16 células é o mesmo da marca no branch `main`. Uma célula no centro se divide — **1 → 2 → 4 → 8 → 16** — e as pontes crescem de célula em célula. No `main` essas pontes fecham o **4** e a seta. Aqui elas formam as letras **IA** dentro do diamante: primeiro a haste do I, depois as pernas do A e, por último, a travessa. As pontes seguram, recolhem e as células se fundem de volta. O ciclo dura **6 segundos**, na cor **`#7C154D`**.
 
-O branch `main` é a outra variante: a mesma mitose termina na **marca S4E**, não nestas letras. Instalar sem `#IA` acompanha o `main`.
+A silhueta do diamante permanece. Instalar sem `#IA` acompanha o `main` e volta a desenhar o 4 e a seta.
 
 É um Web Component `<s4e-loader>`, sem dependências. O `dist/` já vem pronto neste repositório: instalar não exige build.
 
@@ -139,7 +139,7 @@ export class AppComponent {}
 
 ## SVG puro (`<img>`)
 
-Sem JavaScript. A cor fica fixa em `#7C154D` (edite o `fill` do arquivo se precisar de outra). O desenho é o ciclo inteiro, e o quadro estável mostra **I A**.
+Sem JavaScript. A cor fica fixa em `#7C154D` (edite o `fill` do arquivo se precisar de outra). O desenho é o ciclo inteiro, e o quadro estável mostra o diamante com as letras **IA**.
 
 ```html
 <img
@@ -156,7 +156,7 @@ O arquivo local é `dist/mitosis-loader.svg` (também em `node_modules/@s4e/mito
 | Atributo | Padrão | Descrição |
 | --- | --- | --- |
 | `size` | `64` | Tamanho em px (número) ou qualquer unidade CSS (`2rem`, `100%`). |
-| `color` | `#7C154D` | Cor das letras e das células. |
+| `color` | `#7C154D` | Cor das células, das pontes e das letras. |
 | `speed` | `1` | Multiplicador de velocidade. `1` = ciclo de 6s. |
 | `label` | `Carregando` | Texto do `aria-label`. |
 | `paused` | — | Presente = animação pausada. |
@@ -181,17 +181,17 @@ s4e-loader {
 
 O elemento recebe `role="progressbar"`, `aria-busy="true"` e `aria-label` (`label`, padrão `"Carregando"`).
 
-Com `prefers-reduced-motion: reduce`, a mitose não roda: as letras I A aparecem inteiras, com uma pulsação suave.
+Com `prefers-reduced-motion: reduce`, a mitose não roda: o diamante com as letras IA aparece inteiro, com uma pulsação suave.
 
 ## O que este branch desenha
 
-As 16 células pousam numa grade de dois blocos, com um vão entre eles.
+As 16 células pousam na mesma grade do diamante da marca S4E (`viewBox` 910×910). Os pontos soltos da silhueta — topo, base, ponta direita, cantos — continuam células sem ponte. A ponta direita não vira seta.
 
-O **I** usa 8 células: três na serifa de cima, duas no meio da haste e três na serifa de baixo. A ponte da haste liga o centro das serifas de cima para baixo; as serifas crescem a partir desses centros.
+O **I** é a coluna da esquerda do centro, três células em x≈324: de (0,1) a (1,2) e até (2,3). A haste cresce de cima para baixo. Não tem serifa; os vizinhos dessa coluna são cantos do diamante ou células do A.
 
-O **A** usa as outras 8: ápice, dois ombros, dois nós na altura da travessa, o centro da travessa e dois pés. As pernas crescem juntas, do ápice até o pé; a travessa liga os nós do meio e deixa o contador aberto, com a base aberta entre os pés.
+O **A** ocupa o lado direito, onde ficava a seta. O ápice é (1,0). A perna esquerda desce (1,0)→(1,1)→(2,2); a direita, (1,0)→(2,0)→(3,1). A travessa cruza na altura da célula central (2,1), então essa célula fica no traço e o vão acima dela permanece aberto. A base, entre os dois pés, também fica aberta.
 
-A primeira divisão manda metade das células para o lado do I e metade para o lado do A. As divisões seguintes separam topo e base, depois os pares, até cada célula chegar no seu nó. O filtro gooey (desfoque + limiar) continua responsável pelo alongamento e pelo estrangulamento de cada mitose.
+A coreografia da mitose é a do `main`: 1→2→4→8→16, com o filtro gooey (desfoque + limiar) no alongamento e no estrangulamento. As letras só entram depois que as 16 células assentam.
 
 ## Atualizar
 
@@ -205,4 +205,4 @@ Sem `#IA`, a instalação acompanha o `main` e volta a formar a marca S4E. Para 
 npm run build
 ```
 
-A grade das letras e o tempo das pontes estão em `scripts/build.mjs`. A demo local é o `demo.html` (abra no navegador; o script já vai dentro do arquivo).
+A grade do diamante e o tempo das pontes IA estão em `scripts/build.mjs`. A demo local é o `demo.html` (abra no navegador; o script já vai dentro do arquivo).
